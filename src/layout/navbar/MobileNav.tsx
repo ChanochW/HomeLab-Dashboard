@@ -30,7 +30,7 @@ export const MobileNav: FunctionComponent = forwardRef((props, ref) => {
 const HamburgerMenu: FunctionComponent = () => {
     return (
         <div className={styles.hamburgerMenu}>
-            <SearchBar className={styles.searchForm}/>
+            <SearchBar/>
             <div className={styles.progressItems}>
                 <div className={styles.progressItem}>
                     <FaMicrochip size={22}/>

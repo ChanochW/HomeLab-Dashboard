@@ -36,7 +36,7 @@ export const Navbar: FunctionComponent = forwardRef((props, ref) => {
                     </div>
                 </div>
             </div>
-            <SearchBar className={styles.searchForm}/>
+            <SearchBar/>
         </nav>
     );
 })

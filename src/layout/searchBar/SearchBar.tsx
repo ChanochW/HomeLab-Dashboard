@@ -1,10 +1,11 @@
 import React, {FunctionComponent, useEffect, useState} from "react";
+import desktopStyles from './searchBar.module.css';
+import mobileStyles from './searchBar_mobile.module.css';
+import {usePlatformValue} from "../../hooks/usePlatformValue";
 
-interface SearchBarProps {
-    className: string;
-}
-export const SearchBar: FunctionComponent<SearchBarProps> = (props) => {
+export const SearchBar: FunctionComponent = () => {
     const [searchTerm, setSearchTerm] = useState<string>("");
+    const styles = usePlatformValue() ? mobileStyles : desktopStyles;
 
     useEffect(() => {
         console.log(searchTerm);
@@ -15,7 +16,7 @@ export const SearchBar: FunctionComponent<SearchBarProps> = (props) => {
     }
 
     return (
-        <form className={props.className}>
+        <form className={styles["searchForm"]}>
             <input
                 type="text"
                 value={searchTerm}
