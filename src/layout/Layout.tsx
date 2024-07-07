@@ -1,10 +1,10 @@
 import {FunctionComponent} from "react";
 import {Outlet} from "react-router-dom/dist";
-import {Navbar} from "./navbar/Navbar";
+import {Navbar} from "../components/navbar/Navbar";
 
 import styles from './layout.module.css';
 import {usePlatformValue} from "../hooks/usePlatformValue";
-import {MobileNav} from "./navbar/MobileNav";
+import {MobileNav} from "../components/navbar/MobileNav";
 import {useNavbarHeight} from "../hooks/useNavbarHeight";
 
 export const Layout: FunctionComponent = () => {
