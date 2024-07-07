@@ -14,14 +14,3 @@
     justify-content: space-between;
     align-items: center;
 }
-
-.navbarBrand {
-    display: flex;
-    gap: 0.938rem;
-    align-items: center;
-    font-family: monospace;
-    font-size: 1.5rem;
-}
-
-
-

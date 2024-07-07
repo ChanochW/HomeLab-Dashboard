@@ -1,18 +1,15 @@
 import {forwardRef, FunctionComponent} from "react";
-import {GiSpy} from "react-icons/gi";
 import {FaHdd, FaMemory, FaMicrochip} from "react-icons/fa";
+import {SearchBar} from "../searchBar/SearchBar";
+import {SiteBranding} from "../siteBranding/SiteBranding";
 
 import styles from './navbar.module.css'
-import {SearchBar} from "../searchBar/SearchBar";
 
 export const Navbar: FunctionComponent = forwardRef((props, ref) => {
 
     return (
         <nav ref={ref} className={styles.navbar}>
-            <div className={styles.navbarBrand}>
-                <GiSpy size={64}/>
-                <span>HomeLab Portal</span>
-            </div>
+            <SiteBranding/>
             <div className={styles.progressItems}>
                 <div className={styles.progressItem}>
                     <FaMicrochip size={22}/>
