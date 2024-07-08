@@ -1,0 +1,8 @@
+.progressItems {
+    display: flex;
+    align-items: center;
+    margin-right: 0.938rem;
+    margin-left: 0.938rem;
+    gap: 0.938rem;
+    flex-shrink: 1;
+}

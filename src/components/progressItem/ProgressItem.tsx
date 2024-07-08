@@ -1,18 +1,18 @@
 import {FunctionComponent, ReactElement} from "react";
 
+import styles from './progress_item.module.css'
+
 interface ProgressItemProps {
     name: string;
     currentValue: number;
     maxValue: number;
     graphicsElement: ReactElement;
-    styles: { [key: string]: string };
 }
 
 export const ProgressItem: FunctionComponent<ProgressItemProps> = ({
    name,
    currentValue,
    maxValue,
-   styles,
    graphicsElement
 }) => {
     return (

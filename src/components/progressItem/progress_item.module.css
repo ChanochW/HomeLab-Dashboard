@@ -1,0 +1,33 @@
+.progressItem {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+}
+
+.progressInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-size: 1rem;
+    font-family: monospace
+}
+
+.progressInfo progress {
+    height: 0.625rem;
+    border-radius: 0.625rem;
+}
+
+progress::-webkit-progress-bar {
+    background-color: #555;
+    border-radius: 0.313rem;
+}
+
+progress::-webkit-progress-value {
+    background-color: #4caf50;
+    border-radius: 0.313rem;
+}
+
+.progressInfo progress::-moz-progress-bar {
+    background-color: #4caf50; /* Fallback for Firefox */
+    border-radius: 0.313rem;
+}

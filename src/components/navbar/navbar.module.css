@@ -12,44 +12,4 @@
     z-index: 1000;
 }
 
-.progressItems {
-    display: flex;
-    align-items: center;
-    margin-right: 0.938rem;
-    margin-left: 0.938rem;
-    gap: 0.938rem;
-    flex-shrink: 1;
-}
 
-.progressItem {
-    display: flex;
-    align-items: center;
-    gap: 0.625rem;
-}
-
-.progressInfo {
-    display: flex;
-    flex-direction: column;
-    font-size: 1rem;
-    font-family: monospace
-}
-
-.progressInfo progress {
-    height: 0.625rem;
-    border-radius: 10px;
-}
-
-progress::-webkit-progress-bar {
-    background-color: #555;
-    border-radius: 0.313rem;
-}
-
-progress::-webkit-progress-value {
-    background-color: #4caf50;
-    border-radius: 0.313rem;
-}
-
-.progressInfo progress::-moz-progress-bar {
-    background-color: #4caf50; /* Fallback for Firefox */
-    border-radius: 0.313rem;
-}
