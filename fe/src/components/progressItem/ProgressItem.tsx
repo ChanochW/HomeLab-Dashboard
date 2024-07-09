@@ -15,12 +15,19 @@ export const ProgressItem: FunctionComponent<ProgressItemProps> = ({
    maxValue,
    graphicsElement
 }) => {
+    const progressPercentage = (currentValue / maxValue) * 100;
+
     return (
         <div className={styles.progressItem}>
             {graphicsElement}
             <div className={styles.progressInfo}>
                 <div>{name}</div>
-                <progress value={currentValue} max={maxValue}></progress>
+                <div className={styles.progressContainer}>
+                    <div
+                        className={styles.progressBar}
+                        style={{ width: `${progressPercentage}%` }}
+                    ></div>
+                </div>
             </div>
         </div>
     );

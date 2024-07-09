@@ -1,0 +1,23 @@
+{
+  "name": "homelab_sysinfo_monitor_service",
+  "version": "1.0.0",
+  "description": "A monitoring service for the server components of a homelab system.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "ChanochW",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2",
+    "http": "^0.0.1-security",
+    "socket.io": "^4.7.5",
+    "systeminformation": "^5.22.11"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  }
+}

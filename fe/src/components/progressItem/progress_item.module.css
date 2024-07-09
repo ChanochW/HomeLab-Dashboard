@@ -1,0 +1,28 @@
+.progressItem {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+}
+
+.progressInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-size: 1rem;
+    font-family: monospace;
+}
+
+.progressContainer {
+    width: 150px;
+    height: 0.625rem;
+    background-color: #555;
+    border-radius: 0.625rem;
+    overflow: hidden;
+}
+
+.progressBar {
+    height: 100%;
+    background-color: #4caf50;
+    border-radius: 0.625rem 0 0 0.625rem;
+    transition: width 0.2s ease-in-out;
+}
