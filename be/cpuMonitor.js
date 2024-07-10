@@ -7,14 +7,12 @@ export function startCPUMonitor() {
     let intervalCount = 0;
     averageUtilization = 0;
 
-    setInterval(() => {
+    return setInterval(() => {
         getCurrentCPUUtilization((error, cpuUtilization) => {
             if (intervalCount >= Number.MAX_SAFE_INTEGER) {
                 intervalCount = 0;
             }
             intervalCount++;
-
-            console.log("Interval #: " + intervalCount);
 
             if (cpuUtilizationPeriod.length >= 15) {
                 cpuUtilizationPeriod.shift();
@@ -30,8 +28,7 @@ export function startCPUMonitor() {
             if ((intervalCount % 5) === 0) {
                 const sumOfMinute = cpuUtilizationPeriod.reduce((accumulatedValue, currentValue) =>
                     accumulatedValue + currentValue, 0);
-                averageUtilization = parseFloat((sumOfMinute / cpuUtilizationPeriod.length).toFixed(2));
-                console.log(`Updated average to: ${averageUtilization}`);
+                averageUtilization = parseFloat((sumOfMinute / cpuUtilizationPeriod.length).toFixed(1));
             }
         });
     }, 1000);

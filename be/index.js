@@ -11,7 +11,7 @@ const io = new Server(8080, {
 io.on('connection', (socket) => {
     console.log('Client connected');
 
-    startCPUMonitor();
+    const intervalId = startCPUMonitor();
 
     const sendCPUUsage = async () => {
         try {
@@ -29,6 +29,7 @@ io.on('connection', (socket) => {
     socket.on('disconnect', () => {
         console.log('Client disconnected');
         clearInterval(interval);
+        clearInterval(intervalId);
     });
 });
 
