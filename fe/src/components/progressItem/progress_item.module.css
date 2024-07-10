@@ -12,6 +12,11 @@
     font-family: monospace;
 }
 
+.progressText {
+    display: flex;
+    justify-content: space-between;
+}
+
 .progressContainer {
     width: 150px;
     height: 0.625rem;
@@ -23,6 +28,13 @@
 .progressBar {
     height: 100%;
     background-color: #4caf50;
+    border-radius: 0.625rem 0 0 0.625rem;
+    transition: width 0.2s ease-in-out;
+}
+
+.progressBarError {
+    height: 100%;
+    background-color: #af4c4c;
     border-radius: 0.625rem 0 0 0.625rem;
     transition: width 0.2s ease-in-out;
 }

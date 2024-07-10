@@ -4,28 +4,31 @@ import styles from './progress_item.module.css'
 
 interface ProgressItemProps {
     name: string;
-    currentValue: number;
-    maxValue: number;
     graphicsElement: ReactElement;
+    progressPercentage: number;
+    contentDescription: string;
+    error: boolean;
 }
 
 export const ProgressItem: FunctionComponent<ProgressItemProps> = ({
-   name,
-   currentValue,
-   maxValue,
-   graphicsElement
+    name,
+    graphicsElement,
+    progressPercentage,
+    contentDescription,
+    error
 }) => {
-    const progressPercentage = (currentValue / maxValue) * 100;
-
     return (
         <div className={styles.progressItem}>
             {graphicsElement}
             <div className={styles.progressInfo}>
-                <div>{name}</div>
+                <div className={styles.progressText}>
+                    <span>{name}</span>
+                    <span>{contentDescription}</span>
+                </div>
                 <div className={styles.progressContainer}>
                     <div
-                        className={styles.progressBar}
-                        style={{ width: `${progressPercentage}%` }}
+                        className={error ? styles.progressBarError : styles.progressBar}
+                        style={{ width: `${error ? 100 : progressPercentage}%` }}
                     ></div>
                 </div>
             </div>

@@ -7,24 +7,35 @@ import {io} from "socket.io-client";
 import desktopStyles from './progress_items.module.css';
 import mobileStyles from './progress_items_mobile.module.css';
 
+//TODO put in an env
 const socket = io("http://localhost:8080");
 
 interface DeviceType {
     name: string;
     element: ReactElement;
     progress: number[];
+    error: boolean;
 }
 
 export const ProgressItems: FunctionComponent = () => {
     const styles = usePlatformValue() ? mobileStyles : desktopStyles;
     const [deviceProgress, setDeviceProgress] = useState<DeviceType[]>(initialDevicesState);
+    const [connectionError, setConnectionError] = useState(false);
     
     useEffect(() => {
+        socket.on('connect_error', () => {
+            setConnectionError(true);
+        });
+
+        socket.on('disconnect', () => {
+            setConnectionError(true);
+        })
+
         socket.on('cpu', (cpuUtilization) => {
             setDeviceProgress((prevState) =>
                 prevState.map(device =>
                     device.name === "CPU"
-                        ? { ...device, progress: [cpuUtilization, 100] }
+                        ? { ...device, progress: [cpuUtilization, 100], error: false }
                         : device
                 )
             );
@@ -32,20 +43,41 @@ export const ProgressItems: FunctionComponent = () => {
 
         return () => {
             socket.off('cpu');
+            socket.off('connect_error');
+            socket.off('disconnect');
         };
     }, [])
 
+    useEffect(() => {
+        if (connectionError) {
+            setDeviceProgress((prevState) =>
+                prevState.map(device =>
+                    device.name === "CPU"
+                        ? { ...device, progress: [100, 100], error: true }
+                        : device
+                )
+            );
+        }
+    }, [connectionError]);
+
     return (
         <div className={styles["progressItems"]}>
-            {deviceProgress.map((device) =>
-                <ProgressItem
-                    key={device.name}
-                    name={device.name}
-                    currentValue={device.progress[0]}
-                    maxValue={device.progress[1]}
-                    graphicsElement={device.element}
-                />
-            )}
+            {deviceProgress.map((device) => {
+                const progressPercentage = (device.progress[0] / device.progress[1]) * 100;
+                const cpuDescription = `${device.error ? "-" : parseFloat(progressPercentage.toFixed(1))}%`;
+                const otherDescription = `${device.error ? "-" : parseFloat(device.progress[0].toFixed(1))}/${device.error ? "-" : parseFloat(device.progress[1].toFixed(1))} GB`;
+
+                return (
+                    <ProgressItem
+                        key={device.name}
+                        name={device.name}
+                        graphicsElement={device.element}
+                        progressPercentage={progressPercentage}
+                        contentDescription={device.name === 'CPU' ? cpuDescription : otherDescription}
+                        error={device.error}
+                    />
+                );
+            })}
         </div>
     );
 }
@@ -54,16 +86,19 @@ const initialDevicesState = [
     {
         name: "CPU",
         element: <FaMicrochip size={22}/>,
-        progress: [0, 100]
+        progress: [0, 100],
+        error: false
     },
     {
         name: "RAM",
         element: <FaMemory size={22}/>,
-        progress: [0, 100]
+        progress: [0, 100],
+        error: false
     },
     {
         name: "Disk",
         element: <FaHdd size={22}/>,
-        progress: [0, 100]
+        progress: [0, 100],
+        error: false
     }
 ];
