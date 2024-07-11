@@ -1,6 +1,7 @@
 import {Server} from "socket.io";
 import {averageUtilization, startCPUMonitor} from "./cpuMonitor.js";
 import {getCurrentRAMUsage} from "./ramMonitor.js";
+import {getCurrentDiskUsage} from "./diskMonitor.js";
 
 const io = new Server(8080, {
     cors: {
@@ -14,7 +15,7 @@ io.on('connection', (socket) => {
 
     const cpuIntervalMonitor = startCPUMonitor();
 
-    const sendCPUUsage = async () => {
+    const sendCPUUsage = () => {
         try {
             console.log("---------------------------------------------------------------");
             console.log(`Average CPU Utilization over 15 seconds: ${averageUtilization}%`);
@@ -25,7 +26,7 @@ io.on('connection', (socket) => {
         }
     };
 
-    const sendRAMUsage = async () => {
+    const sendRAMUsage = () => {
         getCurrentRAMUsage((error, ramUsage) => {
             if (error) {
                 console.error(`Error fetching RAM usage: ${error.message}`);
@@ -38,14 +39,30 @@ io.on('connection', (socket) => {
         });
     };
 
+    const sendDiskUsage = () => {
+        getCurrentDiskUsage((error, diskUsage) => {
+            if (error) {
+                console.error(error);
+            } else {
+                console.log("-------------------------------------------");
+                console.log(`Disk Usage: ${diskUsage[0]}/${diskUsage[1]} GB`);
+                console.log("-------------------------------------------");
+                socket.emit('disk', diskUsage);
+                console.log(`Disk space used: ${diskUsage[0]}/${diskUsage[1]} GB`);
+            }
+        })
+    }
+
     const cpuInterval = setInterval(sendCPUUsage, 5_000);
     const ramInterval = setInterval(sendRAMUsage, 15_000);
+    const diskInterval = setInterval(sendDiskUsage, 30_000);
 
     socket.on('disconnect', () => {
-        console.log('Client disconnected');
         clearInterval(cpuInterval);
         clearInterval(cpuIntervalMonitor);
         clearInterval(ramInterval);
+        clearInterval(diskInterval);
+        console.log('Client disconnected');
     });
 });
 
