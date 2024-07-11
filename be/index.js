@@ -10,12 +10,15 @@ const io = new Server(8080, {
     }
 });
 
+//TODO set up intervals in ram and disk monitors
+
 io.on('connection', (socket) => {
     console.log('Client connected');
 
     const cpuIntervalMonitor = startCPUMonitor();
 
     const sendInitialLoad = () => {
+        sendCPUUsage();
         sendRAMUsage();
         sendDiskUsage();
     }
@@ -57,7 +60,7 @@ io.on('connection', (socket) => {
         })
     }
 
-    const initialInterval = setTimeout(sendInitialLoad, 10_000);
+    const initialInterval = setTimeout(sendInitialLoad, 2_000);
     const cpuInterval = setInterval(sendCPUUsage, 5_000);
     const ramInterval = setInterval(sendRAMUsage, 15_000);
     const diskInterval = setInterval(sendDiskUsage, 30_000);

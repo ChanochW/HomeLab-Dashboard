@@ -8,6 +8,7 @@ interface ProgressItemProps {
     progressPercentage: number;
     contentDescription: string;
     error: boolean;
+    loading: boolean;
 }
 
 export const ProgressItem: FunctionComponent<ProgressItemProps> = ({
@@ -15,7 +16,8 @@ export const ProgressItem: FunctionComponent<ProgressItemProps> = ({
     graphicsElement,
     progressPercentage,
     contentDescription,
-    error
+    error,
+    loading
 }) => {
     return (
         <div className={styles.progressItem}>
@@ -27,9 +29,9 @@ export const ProgressItem: FunctionComponent<ProgressItemProps> = ({
                 </div>
                 <div className={styles.progressContainer}>
                     <div
-                        className={error ? styles.progressBarError : styles.progressBar}
+                        className={loading ? styles.pulsing : (error ? styles.progressBarError : styles.progressBar)}
                         style={{ width: `${error ? 100 : progressPercentage}%` }}
-                    ></div>
+                    />
                 </div>
             </div>
         </div>

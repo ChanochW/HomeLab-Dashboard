@@ -15,13 +15,13 @@ interface DeviceType {
     element: ReactElement;
     progress: number[];
     error: boolean;
+    loading: boolean;
 }
 
 export const ProgressItems: FunctionComponent = () => {
     const styles = usePlatformValue() ? mobileStyles : desktopStyles;
     const [deviceProgress, setDeviceProgress] = useState<DeviceType[]>(initialDevicesState);
     const [connectionError, setConnectionError] = useState(false);
-    const [loading, setLoading] = useState(true);
     
     useEffect(() => {
         socket.on('connect_error', () => {
@@ -36,7 +36,7 @@ export const ProgressItems: FunctionComponent = () => {
             setDeviceProgress((prevState) =>
                 prevState.map(device =>
                     device.name === "CPU"
-                        ? { ...device, progress: [cpuUtilization, 100], error: false }
+                        ? { ...device, progress: [cpuUtilization, 100], error: false, loading: false }
                         : device
                 )
             );
@@ -46,7 +46,7 @@ export const ProgressItems: FunctionComponent = () => {
             setDeviceProgress((prevState) =>
                 prevState.map(device =>
                     device.name === "RAM"
-                        ? { ...device, progress: [ramUsage[0], ramUsage[1]], error: false }
+                        ? { ...device, progress: [ramUsage[0], ramUsage[1]], error: false, loading: false }
                         : device
                 )
             );
@@ -56,7 +56,7 @@ export const ProgressItems: FunctionComponent = () => {
             setDeviceProgress((prevState) =>
                 prevState.map(device =>
                     device.name === "Disk"
-                        ? { ...device, progress: [diskUsage[0], diskUsage[1]], error: false }
+                        ? { ...device, progress: [diskUsage[0], diskUsage[1]], error: false, loading: false }
                         : device
                 )
             );
@@ -89,11 +89,12 @@ export const ProgressItems: FunctionComponent = () => {
 
     return (
         <div className={styles["progressItems"]}>
-            <div>Loading...</div>
             {deviceProgress.map((device) => {
                 const progressPercentage = (device.progress[0] / device.progress[1]) * 100;
-                const cpuDescription = `${device.error ? "-" : parseFloat(progressPercentage.toFixed(1))}%`;
-                const otherDescription = `${device.error ? "-" : parseFloat(device.progress[0].toFixed(1))}/${device.error ? "-" : parseFloat(device.progress[1].toFixed(1))} GB`;
+                const cpuLoadingDescription = "-%";
+                const otherLoadingDescription = "-/- GB";
+                const cpuDescription = device.loading ? cpuLoadingDescription : (`${device.error ? "-" : parseFloat(progressPercentage.toFixed(1))}%`);
+                const otherDescription = device.loading ? otherLoadingDescription : (`${device.error ? "-" : parseFloat(device.progress[0].toFixed(1))}/${device.error ? "-" : parseFloat(device.progress[1].toFixed(1))} GB`);
 
                 return (
                     <ProgressItem
@@ -102,6 +103,7 @@ export const ProgressItems: FunctionComponent = () => {
                         graphicsElement={device.element}
                         progressPercentage={progressPercentage}
                         contentDescription={device.name === 'CPU' ? cpuDescription : otherDescription}
+                        loading={device.loading}
                         error={device.error}
                     />
                 );
@@ -115,18 +117,21 @@ const initialDevicesState = [
         name: "CPU",
         element: <FaMicrochip size={22}/>,
         progress: [0, 100],
+        loading: true,
         error: false
     },
     {
         name: "RAM",
         element: <FaMemory size={22}/>,
         progress: [0, 100],
+        loading: true,
         error: false
     },
     {
         name: "Disk",
         element: <FaHdd size={22}/>,
         progress: [0, 100],
+        loading: true,
         error: false
     }
 ];

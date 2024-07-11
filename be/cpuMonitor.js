@@ -1,12 +1,10 @@
 import {exec} from "child_process";
 
 export let averageUtilization = 0;
+let cpuUtilizationPeriod = [];
+let intervalCount = 0;
 
 export function startCPUMonitor() {
-    let cpuUtilizationPeriod = [];
-    let intervalCount = 0;
-    averageUtilization = 0;
-
     return setInterval(() => {
         getCurrentCPUUtilization((error, cpuUtilization) => {
             if (intervalCount >= Number.MAX_SAFE_INTEGER) {
@@ -14,7 +12,7 @@ export function startCPUMonitor() {
             }
             intervalCount++;
 
-            if (cpuUtilizationPeriod.length >= 15) {
+            while (cpuUtilizationPeriod.length >= 15) {
                 cpuUtilizationPeriod.shift();
             }
 
