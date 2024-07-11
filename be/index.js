@@ -15,6 +15,11 @@ io.on('connection', (socket) => {
 
     const cpuIntervalMonitor = startCPUMonitor();
 
+    const sendInitialLoad = () => {
+        sendRAMUsage();
+        sendDiskUsage();
+    }
+
     const sendCPUUsage = () => {
         try {
             console.log("---------------------------------------------------------------");
@@ -48,16 +53,17 @@ io.on('connection', (socket) => {
                 console.log(`Disk Usage: ${diskUsage[0]}/${diskUsage[1]} GB`);
                 console.log("-------------------------------------------");
                 socket.emit('disk', diskUsage);
-                console.log(`Disk space used: ${diskUsage[0]}/${diskUsage[1]} GB`);
             }
         })
     }
 
+    const initialInterval = setTimeout(sendInitialLoad, 10_000);
     const cpuInterval = setInterval(sendCPUUsage, 5_000);
     const ramInterval = setInterval(sendRAMUsage, 15_000);
     const diskInterval = setInterval(sendDiskUsage, 30_000);
 
     socket.on('disconnect', () => {
+        clearTimeout(initialInterval);
         clearInterval(cpuInterval);
         clearInterval(cpuIntervalMonitor);
         clearInterval(ramInterval);

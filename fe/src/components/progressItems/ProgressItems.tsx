@@ -21,6 +21,7 @@ export const ProgressItems: FunctionComponent = () => {
     const styles = usePlatformValue() ? mobileStyles : desktopStyles;
     const [deviceProgress, setDeviceProgress] = useState<DeviceType[]>(initialDevicesState);
     const [connectionError, setConnectionError] = useState(false);
+    const [loading, setLoading] = useState(true);
     
     useEffect(() => {
         socket.on('connect_error', () => {
@@ -51,8 +52,20 @@ export const ProgressItems: FunctionComponent = () => {
             );
         });
 
+        socket.on('disk', (diskUsage) => {
+            setDeviceProgress((prevState) =>
+                prevState.map(device =>
+                    device.name === "Disk"
+                        ? { ...device, progress: [diskUsage[0], diskUsage[1]], error: false }
+                        : device
+                )
+            );
+        });
+
         return () => {
             socket.off('cpu');
+            socket.off('ram');
+            socket.off('disk');
             socket.off('connect_error');
             socket.off('disconnect');
         };
@@ -76,6 +89,7 @@ export const ProgressItems: FunctionComponent = () => {
 
     return (
         <div className={styles["progressItems"]}>
+            <div>Loading...</div>
             {deviceProgress.map((device) => {
                 const progressPercentage = (device.progress[0] / device.progress[1]) * 100;
                 const cpuDescription = `${device.error ? "-" : parseFloat(progressPercentage.toFixed(1))}%`;
