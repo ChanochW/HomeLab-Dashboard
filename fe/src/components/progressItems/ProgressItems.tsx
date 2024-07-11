@@ -41,6 +41,16 @@ export const ProgressItems: FunctionComponent = () => {
             );
         });
 
+        socket.on('ram', (ramUsage) => {
+            setDeviceProgress((prevState) =>
+                prevState.map(device =>
+                    device.name === "RAM"
+                        ? { ...device, progress: [ramUsage[0], ramUsage[1]], error: false }
+                        : device
+                )
+            );
+        });
+
         return () => {
             socket.off('cpu');
             socket.off('connect_error');
@@ -51,11 +61,15 @@ export const ProgressItems: FunctionComponent = () => {
     useEffect(() => {
         if (connectionError) {
             setDeviceProgress((prevState) =>
-                prevState.map(device =>
-                    device.name === "CPU"
-                        ? { ...device, progress: [100, 100], error: true }
-                        : device
-                )
+                prevState.map(device => {
+                    if (device.name === "CPU") {
+                        return { ...device, progress: [100, 100], error: true };
+                    } else if (device.name === "RAM") {
+                        return { ...device, progress: [100, 100], error: true };
+                    } else if (device.name === "Disk") {
+                        return { ...device, progress: [100, 100], error: true };
+                    }else return device;
+                })
             );
         }
     }, [connectionError]);

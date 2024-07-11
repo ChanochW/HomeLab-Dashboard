@@ -18,10 +18,14 @@ export function startCPUMonitor() {
                 cpuUtilizationPeriod.shift();
             }
 
-            if (error) {
-                console.error(`Failed to get CPU utilization: ${error.message}`);
-            } else {
-                console.log(`CPU Utilization: ${cpuUtilization}%`);
+            // if (error) {
+            //     console.error(`Failed to get CPU utilization: ${error.message}`);
+            // } else {
+            //     console.log(`CPU Utilization: ${cpuUtilization}%`);
+            //     cpuUtilizationPeriod.push(cpuUtilization);
+            // }
+
+            if (!error) {
                 cpuUtilizationPeriod.push(cpuUtilization);
             }
 
