@@ -29,7 +29,7 @@ export const ProgressItem: FunctionComponent<ProgressItemProps> = ({
                 </div>
                 <div className={styles.progressContainer}>
                     <div
-                        className={loading ? styles.pulsing : (error ? styles.progressBarError : styles.progressBar)}
+                        className={error ? styles.progressBarError : (loading ? styles.pulsing : styles.progressBar)}
                         style={{ width: `${error ? 100 : progressPercentage}%` }}
                     />
                 </div>

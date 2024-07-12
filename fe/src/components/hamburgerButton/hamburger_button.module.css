@@ -1,5 +1,7 @@
 .hamburgerButton {
-    background-color: #333;
+    background-color: #1e1e1e;
+    color: #333;
+    padding: 0.125rem;
 }
 
 .grab {
