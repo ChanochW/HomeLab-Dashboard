@@ -1,26 +1,18 @@
-import {FunctionComponent, ReactElement, useEffect, useState} from "react";
+import {FunctionComponent, useEffect, useState} from "react";
 import {ProgressItem} from "../progressItem/ProgressItem";
 import {usePlatformValue} from "../../hooks/usePlatformValue";
-import {FaHdd, FaMemory, FaMicrochip} from "react-icons/fa";
 import {io} from "socket.io-client";
 
 import desktopStyles from './progress_items.module.css';
 import mobileStyles from './progress_items_mobile.module.css';
+import {devices, DeviceType} from "../config/devices";
 
 //TODO put in an env
 const socket = io("http://localhost:8080");
 
-interface DeviceType {
-    name: string;
-    element: ReactElement;
-    progress: number[];
-    error: boolean;
-    loading: boolean;
-}
-
 export const ProgressItems: FunctionComponent = () => {
     const styles = usePlatformValue() ? mobileStyles : desktopStyles;
-    const [deviceProgress, setDeviceProgress] = useState<DeviceType[]>(initialDevicesState);
+    const [deviceProgress, setDeviceProgress] = useState<DeviceType[]>(devices);
     const [connectionError, setConnectionError] = useState(false);
     
     useEffect(() => {
@@ -111,27 +103,3 @@ export const ProgressItems: FunctionComponent = () => {
         </div>
     );
 }
-
-const initialDevicesState = [
-    {
-        name: "CPU",
-        element: <FaMicrochip size={22}/>,
-        progress: [0, 100],
-        loading: true,
-        error: false
-    },
-    {
-        name: "RAM",
-        element: <FaMemory size={22}/>,
-        progress: [0, 100],
-        loading: true,
-        error: false
-    },
-    {
-        name: "Disk",
-        element: <FaHdd size={22}/>,
-        progress: [0, 100],
-        loading: true,
-        error: false
-    }
-];

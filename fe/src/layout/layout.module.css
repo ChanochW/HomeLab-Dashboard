@@ -11,8 +11,10 @@ html {
 
 body {
     width: 100%;
+    background-color: #333333;
 }
 
 .content {
     padding: 1.25rem;
+    color: white;
 }

@@ -1,20 +1,34 @@
 import {FaHdd, FaMemory, FaMicrochip} from "react-icons/fa";
-import {getCPUUsage, getDiskUsage, getRAMUsage} from "../util/deviceData";
+import {ReactElement} from "react";
 
-export const devices = [
+export interface DeviceType {
+    name: string;
+    element: ReactElement;
+    progress: number[];
+    error: boolean;
+    loading: boolean;
+}
+
+export const devices: DeviceType[] = [
     {
         name: "CPU",
         element: <FaMicrochip size={22}/>,
-        progress: getCPUUsage()
+        progress: [0, 100],
+        loading: true,
+        error: false
     },
     {
         name: "RAM",
         element: <FaMemory size={22}/>,
-        progress: getRAMUsage()
+        progress: [0, 100],
+        loading: true,
+        error: false
     },
     {
         name: "Disk",
         element: <FaHdd size={22}/>,
-        progress: getDiskUsage()
+        progress: [0, 100],
+        loading: true,
+        error: false
     }
 ];
